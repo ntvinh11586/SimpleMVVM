@@ -9,13 +9,13 @@ import com.example.vinh.simplemvvm.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-    binding.rvRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    UserAdapter userAdapter = new UserAdapter(this, User.getUsers());
-    binding.rvRecyclerView.setAdapter(userAdapter);
-  }
+        binding.rvRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        UserAdapter userAdapter = new UserAdapter(this, User.getUsers());
+        binding.rvRecyclerView.setAdapter(userAdapter);
+    }
 }

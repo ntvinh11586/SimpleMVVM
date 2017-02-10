@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <data>
-    <variable
-      name="userViewModel"
-      type="com.example.vinh.simplemvvm.UserViewModel" />
-  </data>
+    <data>
 
-  <LinearLayout
-    android:id="@+id/llUsers"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:onClick="@{userViewModel.onClick()}">
-    <TextView
-      android:id="@+id/tvName"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="@{userViewModel.name}"/>
-  </LinearLayout>
+        <variable
+            name="userViewModel"
+            type="com.example.vinh.simplemvvm.UserViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/llUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="@{userViewModel.onClick()}"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{userViewModel.name}" />
+    </LinearLayout>
 </layout>
