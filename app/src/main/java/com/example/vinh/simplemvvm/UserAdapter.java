@@ -14,7 +14,8 @@ import java.util.ArrayList;
  * Created by vinh on 2/10/17.
  */
 
-public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements AddingDataListener {
     private ArrayList<User> users;
     private Context context;
 
@@ -27,14 +28,16 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         UserItemBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.user_item, parent, false);
-        return new ViewHolder(binding);
+                R.layout.user_item, parent, false
+        );
+        return new UserVH(binding);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.binding.setUserViewModel(new UserViewModel(context, users.get(position)));
+        UserVH userVH = (UserVH) holder;
+        userVH.binding.setUserViewModel(new UserViewModel(context, users.get(position), this));
+        userVH.binding.executePendingBindings();   // update the view now
     }
 
     @Override
@@ -42,12 +45,9 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return users.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        UserItemBinding binding;
-
-        public ViewHolder(UserItemBinding binding) {
-            super(binding.llUsers);
-            this.binding = binding;
-        }
+    @Override
+    public void onAddingCompleted(User user) {
+        users.add(user);
+        notifyDataSetChanged();
     }
 }

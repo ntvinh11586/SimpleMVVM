@@ -26,4 +26,8 @@ public class User {
     public String getName() {
         return name;
     }
+
+    public void setName(String s) {
+        name = s;
+    }
 }
