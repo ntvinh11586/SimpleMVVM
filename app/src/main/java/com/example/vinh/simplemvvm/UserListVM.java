@@ -9,6 +9,11 @@ import android.databinding.ObservableArrayList;
 
 public class UserListVM {
     private ObservableArrayList<UserVM> userVMs = new ObservableArrayList<UserVM>();
+    private OnAddNewUserListener onAddNewUserListener;
+
+    public interface OnAddNewUserListener {
+        public void onAddNewUserFinished(int position);
+    }
 
     // generate only 3 user items
     public UserListVM(Context context) {
@@ -17,11 +22,22 @@ public class UserListVM {
         }
     }
 
+    public void setOnAddNewUserListener(OnAddNewUserListener onAddNewUserListener) {
+        this.onAddNewUserListener = onAddNewUserListener;
+    }
+
     public UserVM getUserVM(int position) {
         return userVMs.get(position);
     }
 
     public int size() {
         return userVMs.size();
+    }
+
+    public void addNewUserVM() {
+        userVMs.add(new UserVM("User " + userVMs.size()));
+        if (onAddNewUserListener != null) {
+            onAddNewUserListener.onAddNewUserFinished(userVMs.size() - 1);
+        }
     }
 }
