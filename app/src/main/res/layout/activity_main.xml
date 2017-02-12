@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data></data>
+    <data>
+        <variable name="userListVM" type="com.example.vinh.simplemvvm.UserListVM" />
+    </data>
 
     <RelativeLayout
         android:id="@+id/activity_main"
@@ -13,6 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
-            android:focusable="true"></android.support.v7.widget.RecyclerView>
+            android:focusable="true"/>
     </RelativeLayout>
 </layout>

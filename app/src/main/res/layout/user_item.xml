@@ -2,25 +2,21 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
-        <variable
-            name="userViewModel"
-            type="com.example.vinh.simplemvvm.UserViewModel" />
+        <variable name="userVM" type="com.example.vinh.simplemvvm.UserVM" />
     </data>
 
     <LinearLayout
-        android:id="@+id/llUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
-        android:onClick="@{userViewModel.onClick()}"
         android:orientation="vertical"
+        android:onClick="@{userVM.onClick}"
         android:padding="16dp">
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{userViewModel.name}" />
+            android:text="@{userVM.name}"/>
     </LinearLayout>
 </layout>

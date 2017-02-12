@@ -1,7 +1,5 @@
 package com.example.vinh.simplemvvm;
 
-import java.util.ArrayList;
-
 /**
  * Created by vinh on 2/10/17.
  */
@@ -13,21 +11,11 @@ public class User {
         this.name = name;
     }
 
-    // where to get mock data, data get from retrofit, persistence,...
-    public static ArrayList<User> getUsers() {
-        ArrayList<User> users = new ArrayList<>();
-        users.add(new User("vinh 1"));
-        users.add(new User("vinh 2"));
-        users.add(new User("vinh 3"));
-        users.add(new User("vinh 4"));
-        return users;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String s) {
-        name = s;
+    public void setName(String name) {
+        this.name = name;
     }
 }
