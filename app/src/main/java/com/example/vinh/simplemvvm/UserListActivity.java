@@ -24,7 +24,7 @@ public class UserListActivity extends AppCompatActivity
         binding.setUserListVM(userListVM);
 
         binding.rvRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        userAdapter = new UserAdapter(this, userListVM);
+        userAdapter = new UserAdapter(this, userListVM.getUserVMs());
         binding.rvRecyclerView.setAdapter(userAdapter);
     }
 

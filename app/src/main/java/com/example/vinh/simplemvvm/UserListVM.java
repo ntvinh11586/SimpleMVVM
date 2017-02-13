@@ -3,6 +3,8 @@ package com.example.vinh.simplemvvm;
 import android.content.Context;
 import android.databinding.ObservableArrayList;
 
+import java.util.ArrayList;
+
 /**
  * Created by vinh on 2/10/17.
  */
@@ -26,18 +28,14 @@ public class UserListVM {
         this.onAddNewUserListener = onAddNewUserListener;
     }
 
-    public UserVM getUserVM(int position) {
-        return userVMs.get(position);
-    }
-
-    public int size() {
-        return userVMs.size();
-    }
-
     public void addNewUserVM() {
         userVMs.add(new UserVM("User " + userVMs.size()));
         if (onAddNewUserListener != null) {
             onAddNewUserListener.onAddNewUserFinished(userVMs.size() - 1);
         }
+    }
+
+    public ArrayList<UserVM> getUserVMs() {
+        return userVMs;
     }
 }

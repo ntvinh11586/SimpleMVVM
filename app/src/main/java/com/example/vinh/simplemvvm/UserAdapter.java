@@ -9,18 +9,20 @@ import android.widget.Toast;
 
 import com.example.vinh.simplemvvm.databinding.UserItemBinding;
 
+import java.util.ArrayList;
+
 /**
  * Created by vinh on 2/10/17.
  */
 
 public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements UserVM.OnItemClickListener {
-    private UserListVM userListVM;
+    private ArrayList<UserVM> userVMs;
     private Context context;
 
-    public UserAdapter(Context context, UserListVM userListVM) {
+    public UserAdapter(Context context, ArrayList<UserVM> userVMs) {
         this.context = context;
-        this.userListVM = userListVM;
+        this.userVMs = userVMs;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         UserVH userVH = (UserVH) holder;
-        UserVM userVM = userListVM.getUserVM(position);
+        UserVM userVM = userVMs.get(position);
 
         userVH.binding.setUserVM(userVM);
         userVM.setOnItemClickListener(this);
@@ -44,7 +46,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return userListVM.size();
+        return userVMs.size();
     }
 
     @Override
