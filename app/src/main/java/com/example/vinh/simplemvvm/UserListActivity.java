@@ -20,6 +20,7 @@ public class UserListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
         userListVM = new UserListVM(this);
         binding.setUserListVM(userListVM);
 

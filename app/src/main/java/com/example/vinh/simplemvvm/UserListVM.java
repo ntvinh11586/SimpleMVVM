@@ -10,15 +10,19 @@ import java.util.ArrayList;
  */
 
 public class UserListVM {
-    private ObservableArrayList<UserVM> userVMs = new ObservableArrayList<UserVM>();
+    private Context context;
+
+    private ObservableArrayList<UserVM> userVMs;
     private OnAddNewUserListener onAddNewUserListener;
 
     public interface OnAddNewUserListener {
-        public void onAddNewUserFinished(int position);
+        void onAddNewUserFinished(int position);
     }
 
     // generate only 3 user items
     public UserListVM(Context context) {
+        this.context = context;
+        userVMs = new ObservableArrayList<>();
         for (int i = 0; i < 3; i++) {
             userVMs.add(new UserVM("User " + i));
         }
@@ -37,5 +41,9 @@ public class UserListVM {
 
     public ArrayList<UserVM> getUserVMs() {
         return userVMs;
+    }
+
+    public Context getContext() {
+        return this.context;
     }
 }

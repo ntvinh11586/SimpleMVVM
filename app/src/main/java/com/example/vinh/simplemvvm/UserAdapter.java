@@ -38,10 +38,9 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         UserVH userVH = (UserVH) holder;
         UserVM userVM = userVMs.get(position);
-
         userVH.binding.setUserVM(userVM);
-        userVM.setOnItemClickListener(this);
         userVH.binding.executePendingBindings();   // update the view now
+        userVM.setOnItemClickListener(this);
     }
 
     @Override
