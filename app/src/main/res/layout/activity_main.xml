@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable name="userListVM" type="com.example.vinh.simplemvvm.UserListVM" />
+        <variable name="usersViewModel" type="com.example.vinh.simplemvvm.UsersViewModel" />
     </data>
 
     <RelativeLayout

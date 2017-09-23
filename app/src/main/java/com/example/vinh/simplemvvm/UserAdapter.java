@@ -11,18 +11,14 @@ import com.example.vinh.simplemvvm.databinding.UserItemBinding;
 
 import java.util.ArrayList;
 
-/**
- * Created by vinh on 2/10/17.
- */
-
 public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements UserVM.OnItemClickListener {
-    private ArrayList<UserVM> userVMs;
+        implements UserViewModel.OnUserClickListener {
+    private ArrayList<UserViewModel> userViewModels;
     private Context context;
 
-    public UserAdapter(Context context, ArrayList<UserVM> userVMs) {
+    public UserAdapter(Context context, ArrayList<UserViewModel> userViewModels) {
         this.context = context;
-        this.userVMs = userVMs;
+        this.userViewModels = userViewModels;
     }
 
     @Override
@@ -31,21 +27,21 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 LayoutInflater.from(parent.getContext()),
                 R.layout.user_item, parent, false
         );
-        return new UserVH(binding);
+        return new UserViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        UserVH userVH = (UserVH) holder;
-        UserVM userVM = userVMs.get(position);
-        userVH.binding.setUserVM(userVM);
-        userVH.binding.executePendingBindings();   // update the view now
-        userVM.setOnItemClickListener(this);
+        UserViewHolder userViewHolder = (UserViewHolder) holder;
+        UserViewModel userViewModel = userViewModels.get(position);
+        userViewHolder.binding.setUserViewModel(userViewModel);
+        userViewHolder.binding.executePendingBindings();   // update the view now
+        userViewModel.setOnUserClickListener(this);
     }
 
     @Override
     public int getItemCount() {
-        return userVMs.size();
+        return userViewModels.size();
     }
 
     @Override

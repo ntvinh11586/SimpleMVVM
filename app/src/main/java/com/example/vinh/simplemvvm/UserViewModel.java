@@ -4,24 +4,20 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.view.View;
 
-/**
- * Created by vinh on 2/12/17.
- */
-
-public class UserVM extends BaseObservable {
+public class UserViewModel extends BaseObservable {
     private User user;
-    private OnItemClickListener onItemClickListener;
+    private OnUserClickListener onUserClickListener;
 
-    public interface OnItemClickListener {
-        public void onClickFinished(String message);
+    public interface OnUserClickListener {
+        void onClickFinished(String message);
     }
 
-    public UserVM(String name) {
-        user = new User(name);
+    public UserViewModel(User user) {
+        this.user = user;
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    public void setOnUserClickListener(OnUserClickListener onUserClickListener) {
+        this.onUserClickListener = onUserClickListener;
     }
 
     @Bindable
@@ -31,6 +27,7 @@ public class UserVM extends BaseObservable {
 
     public void setName(String name) {
         user.setName(name);
+        notifyPropertyChanged(com.example.vinh.simplemvvm.BR.name);
     }
 
     public View.OnClickListener onClick() {
@@ -38,8 +35,7 @@ public class UserVM extends BaseObservable {
             @Override
             public void onClick(View v) {
                 setName(user.getName() + " Click!");
-                notifyPropertyChanged(BR.name);
-                onItemClickListener.onClickFinished(user.getName());
+                onUserClickListener.onClickFinished(user.getName());
             }
         };
     }

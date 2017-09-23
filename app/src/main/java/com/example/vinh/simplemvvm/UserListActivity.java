@@ -10,10 +10,10 @@ import android.view.MenuItem;
 import com.example.vinh.simplemvvm.databinding.ActivityMainBinding;
 
 public class UserListActivity extends AppCompatActivity
-        implements UserListVM.OnAddNewUserListener {
+        implements UsersViewModel.AddUserListener {
 
     private UserAdapter userAdapter;
-    private UserListVM userListVM;
+    private UsersViewModel usersViewModel;
     private ActivityMainBinding binding;
 
     @Override
@@ -21,26 +21,26 @@ public class UserListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        userListVM = new UserListVM(this);
-        binding.setUserListVM(userListVM);
+        usersViewModel = new UsersViewModel();
+        binding.setUsersViewModel(usersViewModel);
 
         binding.rvRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        userAdapter = new UserAdapter(this, userListVM.getUserVMs());
+        userAdapter = new UserAdapter(this, usersViewModel.getUserViewModels());
         binding.rvRecyclerView.setAdapter(userAdapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        userListVM.setOnAddNewUserListener(this);
+        usersViewModel.setAddUserListener(this);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.miAddUser:
-                userListVM.addNewUserVM();
+            case R.id.add_user:
+                usersViewModel.addUser();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -48,7 +48,7 @@ public class UserListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onAddNewUserFinished(int position) {
+    public void onFinished(int position) {
         userAdapter.notifyItemInserted(position);
     }
 }
