@@ -10,10 +10,10 @@ import android.view.MenuItem;
 import com.example.vinh.simplemvvm.databinding.ActivityMainBinding;
 
 public class UserListActivity extends AppCompatActivity
-        implements UsersViewModel.AddUserListener {
+        implements UserListViewModel.OnCreateUserListener {
 
-    private UserAdapter userAdapter;
-    private UsersViewModel usersViewModel;
+    private UsersAdapter userAdapter;
+    private UserListViewModel userListViewModel;
     private ActivityMainBinding binding;
 
     @Override
@@ -21,18 +21,18 @@ public class UserListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        usersViewModel = new UsersViewModel();
-        binding.setUsersViewModel(usersViewModel);
+        userListViewModel = new UserListViewModel();
+        binding.setUserListViewModel(userListViewModel);
 
         binding.rvRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        userAdapter = new UserAdapter(this, usersViewModel.getUserViewModels());
+        userAdapter = new UsersAdapter(this, userListViewModel.getInitialUsers());
         binding.rvRecyclerView.setAdapter(userAdapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        usersViewModel.setAddUserListener(this);
+        userListViewModel.setOnCreateUserListener(this);
         return true;
     }
 
@@ -40,7 +40,9 @@ public class UserListActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_user:
-                usersViewModel.addUser();
+                userListViewModel.createUser(
+                        userAdapter.getItemCount()
+                );
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -48,7 +50,7 @@ public class UserListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFinished(int position) {
-        userAdapter.notifyItemInserted(position);
+    public void onUserCreated(User user) {
+        userAdapter.addUser(user);
     }
 }

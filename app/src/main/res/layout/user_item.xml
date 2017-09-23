@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
-        android:onClick="@{userViewModel.onClick}"
+        android:onClick="@{() -> userViewModel.onClick()}"
         android:padding="16dp">
 
         <TextView
