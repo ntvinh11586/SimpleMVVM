@@ -4,19 +4,19 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 public class UserViewModel extends BaseObservable {
-    private OnUserItemClickListener onUserItemClickListener;
+    private OnClickListener onClickListener;
     private User user;
 
-    public interface OnUserItemClickListener {
-        void onUserItemClick(String message);
+    public boolean contain(User user) {
+        return this.user.equals(user);
+    }
+
+    public interface OnClickListener{
+        void onClick(User user);
     }
 
     public UserViewModel(User user) {
         this.user = user;
-    }
-
-    public void setOnUserItemClickListener(OnUserItemClickListener onUserItemClickListener) {
-        this.onUserItemClickListener = onUserItemClickListener;
     }
 
     @Bindable
@@ -29,7 +29,11 @@ public class UserViewModel extends BaseObservable {
         notifyPropertyChanged(com.example.vinh.simplemvvm.BR.name);
     }
 
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
     public void onClick() {
-        onUserItemClickListener.onUserItemClick(user.getName());
+        onClickListener.onClick(user);
     }
 }

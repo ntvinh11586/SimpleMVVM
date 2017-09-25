@@ -1,6 +1,8 @@
 package com.example.vinh.simplemvvm;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableList;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,10 +11,7 @@ import android.view.MenuItem;
 
 import com.example.vinh.simplemvvm.databinding.ActivityMainBinding;
 
-public class UserListActivity extends AppCompatActivity
-        implements UserListViewModel.OnCreateUserListener {
-
-    private UsersAdapter userAdapter;
+public class UserListActivity extends AppCompatActivity {
     private UserListViewModel userListViewModel;
     private ActivityMainBinding binding;
 
@@ -21,18 +20,27 @@ public class UserListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        userListViewModel = new UserListViewModel();
-        binding.setUserListViewModel(userListViewModel);
+        // Prepare data
+        ObservableList<UserViewModel> userViewModels = new ObservableArrayList<>();
+        userViewModels.add(new UserViewModel(new User("User 0")));
+        userViewModels.add(new UserViewModel(new User("User 1")));
+        userViewModels.add(new UserViewModel(new User("User 2")));
+        userViewModels.add(new UserViewModel(new User("User 3")));
+        userViewModels.add(new UserViewModel(new User("User 4")));
+
+        UserListViewModel inject = new UserListViewModel(userViewModels);
+
+        // Inject
+        userListViewModel = inject;
 
         binding.rvRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        userAdapter = new UsersAdapter(this, userListViewModel.getInitialUsers());
+        UsersAdapter userAdapter = new UsersAdapter(this, userListViewModel);
         binding.rvRecyclerView.setAdapter(userAdapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        userListViewModel.setOnCreateUserListener(this);
         return true;
     }
 
@@ -40,17 +48,10 @@ public class UserListActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_user:
-                userListViewModel.createUser(
-                        userAdapter.getItemCount()
-                );
+                userListViewModel.createUser();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onUserCreated(User user) {
-        userAdapter.addUser(user);
     }
 }

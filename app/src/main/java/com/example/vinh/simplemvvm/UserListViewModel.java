@@ -1,28 +1,70 @@
 package com.example.vinh.simplemvvm;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.databinding.ObservableList;
 
-public class UserListViewModel {
+public class UserListViewModel implements UserViewModel.OnClickListener {
     private OnCreateUserListener onCreateUserListener;
+    private OnItemClickListener onItemClickListener;
+    private final ObservableList<UserViewModel> userViewModels;
 
-    public interface OnCreateUserListener {
-        void onUserCreated(User user);
+    public interface OnItemClickListener {
+        void onUserItemClick(int position, User user);
     }
 
-    public List<User> getInitialUsers() {
-        List<User> users = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            users.add(new User("User " + i));
-        }
-        return users;
+    public interface OnCreateUserListener {
+        void onUserCreated(int position, User user);
+    }
+
+    public UserListViewModel(ObservableList<UserViewModel> userViewModels) {
+        this.userViewModels = userViewModels;
     }
 
     public void setOnCreateUserListener(OnCreateUserListener onCreateUserListener) {
         this.onCreateUserListener = onCreateUserListener;
     }
 
-    public void createUser(int position) {
-        onCreateUserListener.onUserCreated(new User("User " + position));
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+        for (UserViewModel userViewModel : userViewModels) {
+            userViewModel.setOnClickListener(this);
+        }
+    }
+
+    @Override
+    public void onClick(User user) {
+        onItemClickListener.onUserItemClick(
+                findUserViewModelPosition(user),
+                user
+        );
+    }
+
+    private int findUserViewModelPosition(User user) {
+        for (int pos = 0; pos < userViewModels.size(); pos++) {
+            if (userViewModels.get(pos).contain(user)) {
+                return pos;
+            }
+        }
+        return -1;
+    }
+
+    public UserViewModel getUserViewModel(int position) {
+        return userViewModels.get(position);
+    }
+
+    public int getUserViewModelsSize() {
+        return userViewModels.size();
+    }
+
+    public void createUser() {
+        User user = new User("User " + userViewModels.size());
+        UserViewModel userViewModel = new UserViewModel(user);
+        if (onItemClickListener != null) {
+            userViewModel.setOnClickListener(this);
+        }
+        userViewModels.add(userViewModel);
+        onCreateUserListener.onUserCreated(
+                findUserViewModelPosition(user),
+                user
+        );
     }
 }

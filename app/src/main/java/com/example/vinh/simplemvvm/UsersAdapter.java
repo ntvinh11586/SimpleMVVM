@@ -9,16 +9,17 @@ import android.widget.Toast;
 
 import com.example.vinh.simplemvvm.databinding.UserItemBinding;
 
-import java.util.List;
-
 public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements UserViewModel.OnUserItemClickListener {
-    private List<User> users;
+        implements UserListViewModel.OnItemClickListener,
+        UserListViewModel.OnCreateUserListener {
+    private final UserListViewModel userListViewModel;
     private Context context;
 
-    public UsersAdapter(Context context, List<User> users) {
+    public UsersAdapter(Context context, UserListViewModel userListViewModel) {
         this.context = context;
-        this.users = users;
+        this.userListViewModel = userListViewModel;
+        this.userListViewModel.setOnItemClickListener(this);
+        this.userListViewModel.setOnCreateUserListener(this);
     }
 
     @Override
@@ -35,26 +36,27 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         UserViewHolder userViewHolder = (UserViewHolder) holder;
-        UserViewModel viewModel = new UserViewModel(users.get(position));
-
+        UserViewModel viewModel = userListViewModel.getUserViewModel(position);
         userViewHolder.binding.setUserViewModel(viewModel);
-        viewModel.setOnUserItemClickListener(this);
-
         userViewHolder.binding.executePendingBindings();
     }
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return userListViewModel.getUserViewModelsSize();
+    }
+
+    private Context getContext() {
+        return context;
     }
 
     @Override
-    public void onUserItemClick(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    public void onUserItemClick(int position, User user) {
+        Toast.makeText(getContext(), user.getName(), Toast.LENGTH_SHORT).show();
     }
 
-    public void addUser(User user) {
-        users.add(user);
-        notifyItemChanged(getItemCount() - 1);
+    @Override
+    public void onUserCreated(int position, User user) {
+        notifyItemChanged(position);
     }
 }
