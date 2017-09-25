@@ -1,8 +1,6 @@
 package com.example.vinh.simplemvvm;
 
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableArrayList;
-import android.databinding.ObservableList;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,18 +18,9 @@ public class UserListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        // Prepare data
-        ObservableList<UserViewModel> userViewModels = new ObservableArrayList<>();
-        userViewModels.add(new UserViewModel(new User("User 0")));
-        userViewModels.add(new UserViewModel(new User("User 1")));
-        userViewModels.add(new UserViewModel(new User("User 2")));
-        userViewModels.add(new UserViewModel(new User("User 3")));
-        userViewModels.add(new UserViewModel(new User("User 4")));
-
-        UserListViewModel inject = new UserListViewModel(userViewModels);
-
         // Inject
-        userListViewModel = inject;
+        userListViewModel = ((AppApplication) getApplication())
+                .getUserListViewModel();
 
         binding.rvRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         UsersAdapter userAdapter = new UsersAdapter(this, userListViewModel);
