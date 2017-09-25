@@ -18,8 +18,20 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public UsersAdapter(Context context, UserListViewModel userListViewModel) {
         this.context = context;
         this.userListViewModel = userListViewModel;
-        this.userListViewModel.setOnItemClickListener(this);
-        this.userListViewModel.setOnCreateUserListener(this);
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        userListViewModel.setOnItemClickListener(this);
+        userListViewModel.setOnCreateUserListener(this);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        userListViewModel.setOnItemClickListener(null);
+        userListViewModel.setOnCreateUserListener(null);
+        super.onDetachedFromRecyclerView(recyclerView);
     }
 
     @Override
