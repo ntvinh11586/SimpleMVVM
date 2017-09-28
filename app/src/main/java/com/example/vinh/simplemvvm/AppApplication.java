@@ -12,6 +12,11 @@ public class AppApplication extends Application {
     }
 
     @NonNull
+    public UserProvider getUserProvider() {
+        return new UserProvider();
+    }
+
+    @NonNull
     public ObservableList<UserViewModel> getUserViewModels() {
         ObservableList<UserViewModel> userViewModels = new ObservableArrayList<>();
         for (int pos = 0; pos < 5; pos++) {
@@ -23,6 +28,6 @@ public class AppApplication extends Application {
 
     @NonNull
     public UserListViewModel getUserListViewModel() {
-        return new UserListViewModel(getUserViewModels());
+        return new UserListViewModel(getUserProvider(), getUserViewModels());
     }
 }

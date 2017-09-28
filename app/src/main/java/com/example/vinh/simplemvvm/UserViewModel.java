@@ -24,9 +24,8 @@ public class UserViewModel extends BaseObservable {
         return user.getName();
     }
 
-    public void setName(String name) {
-        user.setName(name);
-        notifyPropertyChanged(com.example.vinh.simplemvvm.BR.name);
+    public User getUser() {
+        return user;
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {

@@ -2,10 +2,14 @@ package com.example.vinh.simplemvvm;
 
 import android.databinding.ObservableList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserListViewModel implements UserViewModel.OnClickListener {
     private OnCreateUserListener onCreateUserListener;
     private OnItemClickListener onItemClickListener;
     private final ObservableList<UserViewModel> userViewModels;
+    private final UserProvider userProvider;
 
     public interface OnItemClickListener {
         void onUserItemClick(int position, User user);
@@ -15,8 +19,12 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
         void onUserCreated(int position, User user);
     }
 
-    public UserListViewModel(ObservableList<UserViewModel> userViewModels) {
+    public UserListViewModel(
+            UserProvider userProvider,
+            ObservableList<UserViewModel> userViewModels
+    ) {
         this.userViewModels = userViewModels;
+        this.userProvider = userProvider;
     }
 
     public void setOnCreateUserListener(OnCreateUserListener onCreateUserListener) {
@@ -51,20 +59,28 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
         return userViewModels.get(position);
     }
 
-    public int getUserViewModelsSize() {
-        return userViewModels.size();
+    public List<UserViewModel> getUserViewModels() {
+        List<UserViewModel> viewModels = new ArrayList<>();
+        for (UserViewModel userViewModel : userViewModels) {
+            viewModels.add(userViewModel);
+        }
+        return viewModels;
     }
 
     public void createUser() {
-        User user = new User("User " + userViewModels.size());
+        User user = userProvider.createUser(userViewModels.size());
         UserViewModel userViewModel = new UserViewModel(user);
+        userViewModels.add(userViewModel);
+
         if (onItemClickListener != null) {
             userViewModel.setOnClickListener(this);
         }
-        userViewModels.add(userViewModel);
-        onCreateUserListener.onUserCreated(
-                findUserViewModelPosition(user),
-                user
-        );
+
+        if (onCreateUserListener != null) {
+            onCreateUserListener.onUserCreated(
+                    findUserViewModelPosition(user),
+                    user
+            );
+        }
     }
 }
