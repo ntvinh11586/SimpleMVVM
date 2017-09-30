@@ -25,26 +25,23 @@ public class UserListViewModelTest {
     @Mock
     private UserProvider userProvider;
 
+    @Mock
+    private UserViewModelProvider userViewModelProvider;
+
     private ObservableArrayList<UserViewModel> userViewModels = new ObservableArrayList<>();
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        userListViewModel = new UserListViewModel(userProvider,
-                new ObservableArrayList<UserViewModel>());
-    }
-
-    @Test
-    public void testCreateUser_createActualUser() {
-        userListViewModel.createUser();
-        Assert.assertNotNull(userListViewModel.getUserViewModel(0));
+        userListViewModel = new UserListViewModel(userViewModelProvider);
     }
 
     @Test
     public void testCreateUser_createCorrectUser() {
         User user = new User("User 0");
+        UserViewModel userViewModel = new UserViewModel(user);
 
-        when(userProvider.createUser(0)).thenReturn(user);
+        when(userViewModelProvider.get(0)).thenReturn(userViewModel);
 
         userListViewModel.createUser();
 
@@ -54,18 +51,17 @@ public class UserListViewModelTest {
 
     @Test
     public void testCreateUser_createCorrectUserWithEmitEvent() {
-        User user = new User("User 0");
+        UserViewModel userViewModel = mock(UserViewModel.class);
 
-        when(userProvider.createUser(0)).thenReturn(user);
+        when(userViewModelProvider.get(0)).thenReturn(userViewModel);
 
         userListViewModel.setOnItemClickListener(onItemClickListener);
         userListViewModel.setOnCreateUserListener(onCreateUserListener);
         userListViewModel.createUser();
 
-        User actualUser = userListViewModel.getUserViewModel(0).getUser();
-        Assert.assertNotNull(userListViewModel.getUserViewModel(0));
-        Assert.assertEquals(user, actualUser);
-        verify(onCreateUserListener, times(1)).onUserCreated(0, user);
+        verify(onCreateUserListener, times(1)).onUserCreated(0, userViewModel.getUser());
+        verify(userListViewModel.getUserViewModel(0), times(1))
+                .setOnClickListener(userListViewModel);
     }
 
     @Test

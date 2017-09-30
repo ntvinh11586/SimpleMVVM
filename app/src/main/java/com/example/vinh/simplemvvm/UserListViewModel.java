@@ -1,5 +1,6 @@
 package com.example.vinh.simplemvvm;
 
+import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 
 import java.util.ArrayList;
@@ -8,8 +9,8 @@ import java.util.List;
 public class UserListViewModel implements UserViewModel.OnClickListener {
     private OnCreateUserListener onCreateUserListener;
     private OnItemClickListener onItemClickListener;
-    private final ObservableList<UserViewModel> userViewModels;
-    private final UserProvider userProvider;
+    private final ObservableList<UserViewModel> userViewModels = new ObservableArrayList<>();
+    private final UserViewModelProvider userViewModelProvider;
 
     public interface OnItemClickListener {
         void onUserItemClick(int position, User user);
@@ -19,12 +20,8 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
         void onUserCreated(int position, User user);
     }
 
-    public UserListViewModel(
-            UserProvider userProvider,
-            ObservableList<UserViewModel> userViewModels
-    ) {
-        this.userViewModels = userViewModels;
-        this.userProvider = userProvider;
+    public UserListViewModel(UserViewModelProvider userViewModelProvider) {
+        this.userViewModelProvider = userViewModelProvider;
     }
 
     public void setOnCreateUserListener(OnCreateUserListener onCreateUserListener) {
@@ -68,8 +65,7 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
     }
 
     public void createUser() {
-        User user = userProvider.createUser(userViewModels.size());
-        UserViewModel userViewModel = new UserViewModel(user);
+        UserViewModel userViewModel = userViewModelProvider.get(userViewModels.size());
         userViewModels.add(userViewModel);
 
         if (onItemClickListener != null) {
@@ -78,8 +74,8 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
 
         if (onCreateUserListener != null) {
             onCreateUserListener.onUserCreated(
-                    findUserViewModelPosition(user),
-                    user
+                    userViewModels.size() - 1,
+                    userViewModel.getUser()
             );
         }
     }
