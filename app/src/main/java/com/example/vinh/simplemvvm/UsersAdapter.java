@@ -5,15 +5,19 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.vinh.simplemvvm.databinding.UserItemBinding;
 
 public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements UserListViewModel.OnItemClickListener,
         UserListViewModel.OnCreateUserListener {
+    private OnItemClickListener onItemClickListener;
     private final UserListViewModel userListViewModel;
     private Context context;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position, UserViewModel userViewModel);
+    }
 
     public UsersAdapter(Context context, UserListViewModel userListViewModel) {
         this.context = context;
@@ -62,9 +66,15 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return context;
     }
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     @Override
-    public void onUserItemClick(int position, User user) {
-        Toast.makeText(getContext(), user.getName(), Toast.LENGTH_SHORT).show();
+    public void onUserItemClick(int position, UserViewModel userViewModel) {
+        if (onItemClickListener != null) {
+            onItemClickListener.onItemClick(position, userViewModel);
+        }
     }
 
     @Override

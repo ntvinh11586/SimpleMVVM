@@ -23,9 +23,6 @@ public class UserListViewModelTest {
     private UserListViewModel.OnItemClickListener onItemClickListener;
 
     @Mock
-    private UserProvider userProvider;
-
-    @Mock
     private UserViewModelProvider userViewModelProvider;
 
     private ObservableArrayList<UserViewModel> userViewModels = new ObservableArrayList<>();

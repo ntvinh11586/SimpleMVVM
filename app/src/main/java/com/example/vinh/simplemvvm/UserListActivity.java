@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.vinh.simplemvvm.databinding.ActivityMainBinding;
 
-public class UserListActivity extends AppCompatActivity {
+public class UserListActivity extends AppCompatActivity
+        implements UsersAdapter.OnItemClickListener {
     private UserListViewModel userListViewModel;
     private ActivityMainBinding binding;
 
@@ -25,6 +27,7 @@ public class UserListActivity extends AppCompatActivity {
         binding.rvRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         UsersAdapter userAdapter = new UsersAdapter(this, userListViewModel);
         binding.rvRecyclerView.setAdapter(userAdapter);
+        userAdapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -42,5 +45,10 @@ public class UserListActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onItemClick(int position, UserViewModel userViewModel) {
+        Toast.makeText(this, userViewModel.getUser().getName(), Toast.LENGTH_SHORT).show();
     }
 }

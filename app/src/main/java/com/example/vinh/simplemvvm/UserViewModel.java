@@ -12,7 +12,7 @@ public class UserViewModel extends BaseObservable {
     }
 
     public interface OnClickListener{
-        void onClick(User user);
+        void onClick(UserViewModel userViewModel);
     }
 
     public UserViewModel(User user) {
@@ -37,6 +37,6 @@ public class UserViewModel extends BaseObservable {
     }
 
     public void onClick() {
-        onClickListener.onClick(user);
+        onClickListener.onClick(this);
     }
 }

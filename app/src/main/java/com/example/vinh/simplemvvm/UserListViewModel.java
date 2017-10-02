@@ -13,7 +13,7 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
     private final UserViewModelProvider userViewModelProvider;
 
     public interface OnItemClickListener {
-        void onUserItemClick(int position, User user);
+        void onUserItemClick(int position, UserViewModel userViewModel);
     }
 
     public interface OnCreateUserListener {
@@ -36,16 +36,19 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
     }
 
     @Override
-    public void onClick(User user) {
-        onItemClickListener.onUserItemClick(
-                findUserViewModelPosition(user),
-                user
-        );
+    public void onClick(UserViewModel userViewModel) {
+        int position = findUserViewModelPosition(userViewModel);
+        if (position != -1) {
+            onItemClickListener.onUserItemClick(
+                    findUserViewModelPosition(userViewModel),
+                    userViewModel
+            );
+        }
     }
 
-    private int findUserViewModelPosition(User user) {
+    private int findUserViewModelPosition(UserViewModel userViewModel) {
         for (int pos = 0; pos < userViewModels.size(); pos++) {
-            if (userViewModels.get(pos).contain(user)) {
+            if (userViewModels.get(pos).equals(userViewModel)) {
                 return pos;
             }
         }
