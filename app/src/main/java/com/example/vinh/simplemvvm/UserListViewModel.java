@@ -17,7 +17,7 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
     }
 
     public interface OnCreateUserListener {
-        void onUserCreated(int position, User user);
+        void onUserCreated(int position, UserViewModel userViewModel);
     }
 
     public UserListViewModel(UserViewModelProvider userViewModelProvider) {
@@ -67,7 +67,7 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
         return viewModels;
     }
 
-    public void createUser() {
+    public void createUserViewModel() {
         UserViewModel userViewModel = userViewModelProvider.get(userViewModels.size());
         userViewModels.add(userViewModel);
 
@@ -78,7 +78,7 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
         if (onCreateUserListener != null) {
             onCreateUserListener.onUserCreated(
                     userViewModels.size() - 1,
-                    userViewModel.getUser()
+                    userViewModel
             );
         }
     }

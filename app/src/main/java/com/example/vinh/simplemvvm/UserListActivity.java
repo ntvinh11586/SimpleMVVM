@@ -40,7 +40,7 @@ public class UserListActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_user:
-                userListViewModel.createUser();
+                userListViewModel.createUserViewModel();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

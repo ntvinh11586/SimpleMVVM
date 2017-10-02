@@ -78,7 +78,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onUserCreated(int position, User user) {
+    public void onUserCreated(int position, UserViewModel userViewModel) {
         notifyItemChanged(position);
     }
 }

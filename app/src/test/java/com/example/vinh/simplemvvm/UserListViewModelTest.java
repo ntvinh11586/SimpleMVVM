@@ -34,29 +34,29 @@ public class UserListViewModelTest {
     }
 
     @Test
-    public void testCreateUser_createCorrectUser() {
-        User user = new User("User 0");
-        UserViewModel userViewModel = new UserViewModel(user);
+    public void testCreateUserViewModel_createCorrectVM() {
+        UserViewModel userViewModel = mock(UserViewModel.class);
 
-        when(userViewModelProvider.get(0)).thenReturn(userViewModel);
+        when(userViewModelProvider.get(0))
+                .thenReturn(userViewModel);
 
-        userListViewModel.createUser();
+        userListViewModel.createUserViewModel();
 
-        User actualUser = userListViewModel.getUserViewModel(0).getUser();
-        Assert.assertEquals(user, actualUser);
+        UserViewModel actualUserViewModel = userListViewModel.getUserViewModel(0);
+        Assert.assertEquals(actualUserViewModel, userViewModel);
     }
 
     @Test
-    public void testCreateUser_createCorrectUserWithEmitEvent() {
+    public void testCreateUserViewModel_createCorrectUserVMWithEmitEvent() {
         UserViewModel userViewModel = mock(UserViewModel.class);
 
         when(userViewModelProvider.get(0)).thenReturn(userViewModel);
 
         userListViewModel.setOnItemClickListener(onItemClickListener);
         userListViewModel.setOnCreateUserListener(onCreateUserListener);
-        userListViewModel.createUser();
+        userListViewModel.createUserViewModel();
 
-        verify(onCreateUserListener, times(1)).onUserCreated(0, userViewModel.getUser());
+        verify(onCreateUserListener, times(1)).onUserCreated(0, userViewModel);
         verify(userListViewModel.getUserViewModel(0), times(1))
                 .setOnClickListener(userListViewModel);
     }
