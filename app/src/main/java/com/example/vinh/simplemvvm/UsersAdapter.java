@@ -1,6 +1,5 @@
 package com.example.vinh.simplemvvm;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,14 +12,12 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         UserListViewModel.OnCreateUserListener {
     private OnItemClickListener onItemClickListener;
     private final UserListViewModel userListViewModel;
-    private Context context;
 
     public interface OnItemClickListener {
         void onItemClick(int position, UserViewModel userViewModel);
     }
 
-    public UsersAdapter(Context context, UserListViewModel userListViewModel) {
-        this.context = context;
+    public UsersAdapter(UserListViewModel userListViewModel) {
         this.userListViewModel = userListViewModel;
     }
 
@@ -52,18 +49,14 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         UserViewHolder userViewHolder = (UserViewHolder) holder;
-        UserViewModel viewModel = userListViewModel.getUserViewModel(position);
-        userViewHolder.binding.setUserViewModel(viewModel);
-        userViewHolder.binding.executePendingBindings();
+        userViewHolder.bind(
+                userListViewModel.getUserViewModel(position)
+        );
     }
 
     @Override
     public int getItemCount() {
         return userListViewModel.getUserViewModels().size();
-    }
-
-    private Context getContext() {
-        return context;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
