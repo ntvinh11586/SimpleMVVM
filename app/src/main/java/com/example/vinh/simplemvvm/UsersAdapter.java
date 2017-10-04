@@ -1,23 +1,20 @@
 package com.example.vinh.simplemvvm;
 
-import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 
-import com.example.vinh.simplemvvm.databinding.UserItemBinding;
-
-public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class UsersAdapter extends MVVMBaseAdapter
         implements UserListViewModel.OnItemClickListener,
         UserListViewModel.OnCreateUserListener {
-    private OnItemClickListener onItemClickListener;
+    private final int layoutId;
     private final UserListViewModel userListViewModel;
+    private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position, UserViewModel userViewModel);
     }
 
-    public UsersAdapter(UserListViewModel userListViewModel) {
+    public UsersAdapter(int layoutId, UserListViewModel userListViewModel) {
+        this.layoutId = layoutId;
         this.userListViewModel = userListViewModel;
     }
 
@@ -36,27 +33,18 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        UserItemBinding binding =
-                DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                        R.layout.user_item,
-                        parent,
-                        false
-                );
-        return new UserViewHolder(binding);
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        UserViewHolder userViewHolder = (UserViewHolder) holder;
-        userViewHolder.bind(
-                userListViewModel.getUserViewModel(position)
-        );
-    }
-
-    @Override
     public int getItemCount() {
         return userListViewModel.getUserViewModels().size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return userListViewModel.getUserViewModel(position);
+    }
+
+    @Override
+    public int getLayoutId(int position) {
+        return layoutId;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

@@ -24,7 +24,7 @@ public class UserListActivity extends AppCompatActivity
         userListViewModel = ((AppApplication) getApplication())
                 .getUserListViewModel();
 
-        UsersAdapter userAdapter = new UsersAdapter(userListViewModel);
+        UsersAdapter userAdapter = new UsersAdapter(R.layout.user_item, userListViewModel);
         binding.rvRecyclerView.setAdapter(userAdapter);
         binding.rvRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         userAdapter.setOnItemClickListener(this);

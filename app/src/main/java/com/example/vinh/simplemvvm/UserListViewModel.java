@@ -2,6 +2,7 @@ package com.example.vinh.simplemvvm;
 
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class UserListViewModel implements UserViewModel.OnClickListener {
         return userViewModels.get(position);
     }
 
+    @NonNull
     public List<UserViewModel> getUserViewModels() {
         List<UserViewModel> viewModels = new ArrayList<>();
         for (UserViewModel userViewModel : userViewModels) {
